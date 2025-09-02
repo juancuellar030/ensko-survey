@@ -25,7 +25,7 @@ body {
     padding: 40px 20px; /* Added more padding for spacing */
     
     /* Add these lines for the background */
-    background-image: url('Assets/colombo-background.jpg');
+    background-image: url('assets/colombo-background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed; /* Keeps the background from scrolling */
