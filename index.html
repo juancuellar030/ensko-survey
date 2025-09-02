@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympians Entry Form - ENSKO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <header>
+            <img src="https://i.imgur.com/gkkP1aH.png" alt="School Logo" class="logo">
+            <h1>Olympians Entry Form - ENSKO</h1>
+            <p>English Skills Olympiad</p>
+            <p class="deadline">All information must be submitted by September 29th.</p>
+            <p class="cost">Registration cost: <strong>COP 80.000</strong> (includes snacks and prizes).</p>
+        </header>
+        <form id="entry-form">
+            
+            <fieldset>
+                <legend>Teacher Information</legend>
+                <div class="form-group">
+                    <label for="school">School <span class="required">*</span></label>
+                    <input type="text" id="school" name="school" required>
+                </div>
+                <div class="form-group">
+                    <label for="teacher_name">Teacher's Name <span class="required">*</span></label>
+                    <input type="text" id="teacher_name" name="teacher_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </fieldset>
+
+            <div class="category-tabs">
+                <button type="button" class="tab-link active" onclick="openCategory(event, 'categoryA')">Category A (4th-5th)</button>
+                <button type="button" class="tab-link" onclick="openCategory(event, 'categoryB')">Category B (6th-7th)</button>
+                <button type="button" class="tab-link" onclick="openCategory(event, 'categoryC')">Category C (8th-9th)</button>
+            </div>
+
+            <!-- Category A -->
+            <div id="categoryA" class="tab-content" style="display: block;">
+                <h3>Category A (4th - 5th Grade)</h3>
+                <fieldset>
+                    <legend>Student 1</legend>
+                    <div class="form-group">
+                        <label for="catA_student1_name">Student Name</label>
+                        <input type="text" id="catA_student1_name" name="catA_student1_name">
+                    </div>
+                    <div class="form-group">
+                        <label>Grade</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="catA_student1_grade" value="4th"> 4th</label>
+                            <label><input type="radio" name="catA_student1_grade" value="5th"> 5th</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="catA_student1_id">I.D. Upload</label>
+                        <input type="file" id="catA_student1_id" name="catA_student1_id" accept=".pdf, image/*">
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Student 2</legend>
+                    <div class="form-group">
+                        <label for="catA_student2_name">Student Name</label>
+                        <input type="text" id="catA_student2_name" name="catA_student2_name">
+                    </div>
+                     <div class="form-group">
+                        <label>Grade</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="catA_student2_grade" value="4th"> 4th</label>
+                            <label><input type="radio" name="catA_student2_grade" value="5th"> 5th</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="catA_student2_id">I.D. Upload</label>
+                        <input type="file" id="catA_student2_id" name="catA_student2_id" accept=".pdf, image/*">
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Category B -->
+            <div id="categoryB" class="tab-content">
+                <h3>Category B (6th - 7th Grade)</h3>
+                <fieldset>
+                    <legend>Student 1</legend>
+                    <div class="form-group">
+                        <label for="catB_student1_name">Student Name</label>
+                        <input type="text" id="catB_student1_name" name="catB_student1_name">
+                    </div>
+                    <div class="form-group">
+                        <label>Grade</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="catB_student1_grade" value="6th"> 6th</label>
+                            <label><input type="radio" name="catB_student1_grade" value="7th"> 7th</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="catB_student1_id">I.D. Upload</label>
+                        <input type="file" id="catB_student1_id" name="catB_student1_id" accept=".pdf, image/*">
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Student 2</legend>
+                    <div class="form-group">
+                        <label for="catB_student2_name">Student Name</label>
+                        <input type="text" id="catB_student2_name" name="catB_student2_name">
+                    </div>
+                     <div class="form-group">
+                        <label>Grade</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="catB_student2_grade" value="6th"> 6th</label>
+                            <label><input type="radio" name="catB_student2_grade" value="7th"> 7th</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="catB_student2_id">I.D. Upload</label>
+                        <input type="file" id="catB_student2_id" name="catB_student2_id" accept=".pdf, image/*">
+                    </div>
+                </fieldset>
+            </div>
+            
+            <!-- Category C -->
+            <div id="categoryC" class="tab-content">
+                <h3>Category C (8th - 9th Grade)</h3>
+                 <fieldset>
+                    <legend>Student 1</legend>
+                    <div class="form-group">
+                        <label for="catC_student1_name">Student Name</label>
+                        <input type="text" id="catC_student1_name" name="catC_student1_name">
+                    </div>
+                    <div class="form-group">
+                        <label>Grade</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="catC_student1_grade" value="8th"> 8th</label>
+                            <label><input type="radio" name="catC_student1_grade" value="9th"> 9th</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="catC_student1_id">I.D. Upload</label>
+                        <input type="file" id="catC_student1_id" name="catC_student1_id" accept=".pdf, image/*">
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Student 2</legend>
+                    <div class="form-group">
+                        <label for="catC_student2_name">Student Name</label>
+                        <input type="text" id="catC_student2_name" name="catC_student2_name">
+                    </div>
+                     <div class="form-group">
+                        <label>Grade</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="catC_student2_grade" value="8th"> 8th</label>
+                            <label><input type="radio" name="catC_student2_grade" value="9th"> 9th</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="catC_student2_id">I.D. Upload</label>
+                        <input type="file" id="catC_student2_id" name="catC_student2_id" accept=".pdf, image/*">
+                    </div>
+                </fieldset>
+            </div>
+            
+            <div class="form-footer">
+                <button type="submit" id="submit-btn">Submit</button>
+                <p id="form-status"></p>
+            </div>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
