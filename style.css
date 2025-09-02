@@ -18,12 +18,27 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 40px 20px; /* Added more padding for spacing */
+    
+    /* Add these lines for the background */
+    background-image: url('Assets/colombo-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps the background from scrolling */
+}
+
+/* --- NEW RULE FOR THE SCHOOL LOGO --- */
+.school-logo {
+    position: fixed; /* Fixes the logo to the viewport */
+    top: 25px;
+    left: 30px;
+    width: 130px; /* Adjust size as needed */
+    height: auto;
+    z-index: 100; /* Ensures it stays on top */
 }
 
 .form-container {
@@ -180,12 +195,26 @@ input[type="file"] {
 }
 
 @media (max-width: 600px) {
+    /* Make the school logo smaller on mobile */
+    .school-logo {
+        width: 90px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    body {
+        padding: 20px 10px; /* Adjust body padding on small screens */
+    }
+    
     .form-container {
         padding: 20px;
+        margin-top: 50px; /* Add space at the top so the form doesn't feel cramped */
     }
+    
     .category-tabs {
         flex-direction: column;
     }
+    
     .tab-link {
         width: 100%;
         text-align: left;
