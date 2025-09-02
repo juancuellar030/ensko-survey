@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // IMPORTANT: Replace this URL with your actual backend endpoint
-            const response = await fetch('YOUR_BACKEND_ENDPOINT_HERE', {
+            const response = await fetch('/.netlify/functions/upload-to-drive', {
                 method: 'POST',
                 body: formData
             });
