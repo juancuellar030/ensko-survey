@@ -3,60 +3,97 @@ const parser = require('aws-lambda-multipart-parser');
 const stream = require('stream');
 
 exports.handler = async (event) => {
-  // 1. AUTHENTICATE WITH GOOGLE
-  // Credentials and Folder ID will be stored in Netlify Environment Variables
-  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
-  const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
+    // --- 1. GET ENVIRONMENT VARIABLES ---
+    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
+    const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
+    const SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/drive.file'],
-  });
-  const drive = google.drive({ version: 'v3', auth });
-
-  try {
-    // 2. PARSE THE FORM DATA
-    // The event body from Netlify is base64 encoded when it's a multipart form
-    const form = await parser.parse(event);
-    
-    // You can access other form fields like this:
-    // const teacherName = form.teacher_name;
-    
-    const fileUploadPromises = form.files.map(async (file) => {
-      if (!file.filename) return; // Skip if no file was uploaded for a field
-
-      // 3. UPLOAD EACH FILE TO GOOGLE DRIVE
-      const bufferStream = new stream.PassThrough();
-      bufferStream.end(file.content);
-
-      const { data } = await drive.files.create({
-        media: {
-          mimeType: file.contentType,
-          body: bufferStream,
-        },
-        requestBody: {
-          name: `${Date.now()}_${file.filename}`, // Add timestamp to avoid name conflicts
-          parents: [FOLDER_ID],
-        },
-        fields: 'id',
-      });
-
-      console.log(`Uploaded file: ${file.filename} with ID: ${data.id}`);
-      return data.id;
+    // --- 2. AUTHENTICATE WITH GOOGLE ---
+    const auth = new google.auth.GoogleAuth({
+        credentials,
+        scopes: [
+            'https://www.googleapis.com/auth/drive.file',
+            'https://www.googleapis.com/auth/spreadsheets',
+        ],
     });
 
-    await Promise.all(fileUploadPromises);
+    const drive = google.drive({ version: 'v3', auth });
+    const sheets = google.sheets({ version: 'v4', auth });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'Files uploaded successfully!' }),
-    };
+    try {
+        // --- 3. PARSE THE FORM DATA ---
+        const form = await parser.parse(event);
+        const uploadedFileDetails = {};
 
-  } catch (error) {
-    console.error('Upload Error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error uploading files.', error: error.message }),
-    };
-  }
+        // --- 4. UPLOAD FILES TO DRIVE (WITH SAFETY CHECK) ---
+        // Check if form.files exists and is an array before mapping
+        if (Array.isArray(form.files)) {
+            const fileUploadPromises = form.files.map(async (file) => {
+                if (!file.filename) return;
+
+                const bufferStream = new stream.PassThrough();
+                bufferStream.end(file.content);
+
+                const { data } = await drive.files.create({
+                    media: { mimeType: file.contentType, body: bufferStream },
+                    requestBody: { name: `${Date.now()}_${file.filename}`, parents: [FOLDER_ID] },
+                    fields: 'id, name',
+                });
+                
+                uploadedFileDetails[file.fieldname] = data.id;
+                console.log(`Uploaded file: ${data.name} with ID: ${data.id}`);
+            });
+            
+            await Promise.all(fileUploadPromises);
+        } else {
+            console.log("No files were uploaded with this submission.");
+        }
+
+        // --- 5. APPEND TEXT DATA TO GOOGLE SHEET ---
+        const { school, teacher_name, email, ...students } = form;
+        
+        const newRow = [
+            new Date().toISOString(), // Timestamp
+            school,
+            teacher_name,
+            email,
+            students.catA_student1_name || '',
+            students.catA_student1_grade || '',
+            uploadedFileDetails.catA_student1_id || 'N/A',
+            students.catA_student2_name || '',
+            students.catA_student2_grade || '',
+            uploadedFileDetails.catA_student2_id || 'N/A',
+            students.catB_student1_name || '',
+            students.catB_student1_grade || '',
+            uploadedFileDetails.catB_student1_id || 'N/A',
+            students.catB_student2_name || '',
+            students.catB_student2_grade || '',
+            uploadedFileDetails.catB_student2_id || 'N/A',
+            students.catC_student1_name || '',
+            students.catC_student1_grade || '',
+            uploadedFileDetails.catC_student1_id || 'N/A',
+            students.catC_student2_name || '',
+            students.catC_student2_grade || '',
+            uploadedFileDetails.catC_student2_id || 'N/A',
+        ];
+
+        await sheets.spreadsheets.values.append({
+            spreadsheetId: SHEET_ID,
+            range: 'Sheet1!A1',
+            valueInputOption: 'USER_ENTERED',
+            requestBody: { values: [newRow] },
+        });
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: 'Form submitted and data recorded successfully!' }),
+        };
+
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Error processing form.', error: error.message }),
+        };
+    }
 };
