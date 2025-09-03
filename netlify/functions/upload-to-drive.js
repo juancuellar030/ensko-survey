@@ -77,9 +77,11 @@ exports.handler = async (event) => {
             uploadedFileDetails.catC_student2_id || 'N/A',
         ];
 
-        await sheets.spreadsheets.values.append({
+       await sheets.spreadsheets.values.append({
             spreadsheetId: SHEET_ID,
-            range: 'Sheet1!A1',
+            // --- THIS IS THE FIX ---
+            // We just specify the sheet name, and 'append' will find the first empty row.
+            range: 'Sheet1', 
             valueInputOption: 'USER_ENTERED',
             requestBody: { values: [newRow] },
         });
