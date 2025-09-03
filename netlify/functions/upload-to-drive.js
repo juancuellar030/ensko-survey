@@ -52,28 +52,28 @@ exports.handler = async (event) => {
         // --- 5. APPEND TEXT DATA TO GOOGLE SHEET ---
         const { school, teacher_name, email, ...students } = form;
         
-        const newRow = [
-            new Date().toISOString(), // Timestamp
-            school,
-            teacher_name,
-            email,
-            students.catA_student1_name || '',
-            students.catA_student1_grade || '',
+       const newRow = [
+            new Date().toISOString(),
+            form.school || '',
+            form.teacher_name || '',
+            form.email || '',
+            form.catA_student1_name || '',
+            form.catA_student1_grade || '',
             uploadedFileDetails.catA_student1_id || 'N/A',
-            students.catA_student2_name || '',
-            students.catA_student2_grade || '',
+            form.catA_student2_name || '',
+            form.catA_student2_grade || '',
             uploadedFileDetails.catA_student2_id || 'N/A',
-            students.catB_student1_name || '',
-            students.catB_student1_grade || '',
+            form.catB_student1_name || '',
+            form.catB_student1_grade || '',
             uploadedFileDetails.catB_student1_id || 'N/A',
-            students.catB_student2_name || '',
-            students.catB_student2_grade || '',
+            form.catB_student2_name || '',
+            form.catB_student2_grade || '',
             uploadedFileDetails.catB_student2_id || 'N/A',
-            students.catC_student1_name || '',
-            students.catC_student1_grade || '',
+            form.catC_student1_name || '',
+            form.catC_student1_grade || '',
             uploadedFileDetails.catC_student1_id || 'N/A',
-            students.catC_student2_name || '',
-            students.catC_student2_grade || '',
+            form.catC_student2_name || '',
+            form.catC_student2_grade || '',
             uploadedFileDetails.catC_student2_id || 'N/A',
         ];
 
